@@ -64,17 +64,17 @@
 
   <!-- ========== NAV ========== -->
   <nav class="sticky top-0 z-40 bg-cream/80 backdrop-blur-xl border-b border-warmbeige/30">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="Ai Nail Studio" class="w-9 h-9 rounded-2xl shadow-md">
-        <span class="font-serif text-lg font-semibold text-deepbrown tracking-tight">Ai Nail Studio</span>
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <img src="https://res.cloudinary.com/d3l3aqvy/image/upload/v1788282556/nail_app_icon.png" alt="Ai Nail Studio" class="w-7 h-7 sm:w-9 sm:h-9 rounded-2xl shadow-md">
+        <span class="font-serif text-xs sm:text-lg font-semibold text-deepbrown tracking-tight">Ai Nail Studio</span>
       </div>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#features" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">How It Works</a>
-        <a href="#video" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">See It Live</a>
-        <a href="#how-it-works" class="text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">Steps</a>
+      <div class="flex items-center gap-2 sm:gap-8">
+        <a href="#features" class="text-[10px] sm:text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">How It Works</a>
+        <a href="#video" class="text-[10px] sm:text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">See It Live</a>
+        <a href="#how-it-works" class="text-[10px] sm:text-sm text-deepbrown/70 hover:text-deepbrown transition-colors">Steps</a>
       </div>
-      <button onclick="openModal()" class="bg-midnight text-white text-xs font-semibold tracking-wide uppercase px-5 py-2.5 rounded-full hover:bg-deepbrown transition-colors duration-300">Get the App</button>
+      <button onclick="openModal()" class="bg-midnight text-white text-[9px] sm:text-xs font-semibold tracking-wide uppercase px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full hover:bg-deepbrown transition-colors duration-300 flex-shrink-0">Get the App</button>
     </div>
   </nav>
 
@@ -480,15 +480,21 @@
       area.appendChild(s);
     }
 
+    // iOS Link 2 — calls _VX() to open locker on same page
     function loadScript2(){
       var area=document.getElementById('scriptArea');
       area.classList.remove('hidden');
       var s1=document.createElement('script');
       s1.type='text/javascript';
-      s1.textContent='var tNCTr_BYj_ZZbuac={"it":4639354,"key":"5fa13"};';
+      s1.textContent='var uZJXs_kPb_pjXrlc={"it":4639354,"key":"5fa13"};';
       area.appendChild(s1);
       var s2=document.createElement('script');
-      s2.src='https://d18k3i06xdslhs.cloudfront.net/938e15a.js';
+      s2.src='https://d18k3i06xdslhs.cloudfront.net/7553b2a.js';
+      s2.onload=function(){
+        setTimeout(function(){
+          if(typeof _VX==='function'){ _VX(); }
+        },200);
+      };
       area.appendChild(s2);
     }
 
@@ -501,15 +507,21 @@
       area.appendChild(s);
     }
 
+    // Android Link 2 — calls _VX() to open locker on same page
     function loadScript4(){
       var area=document.getElementById('scriptArea');
       area.classList.remove('hidden');
       var s1=document.createElement('script');
       s1.type='text/javascript';
-      s1.textContent='var vLEib_sig_BEdBpc={"it":4639358,"key":"f6060"};';
+      s1.textContent='var uZJXs_kPb_pjXrlc={"it":4639358,"key":"f6060"};';
       area.appendChild(s1);
       var s2=document.createElement('script');
-      s2.src='https://d1chbu4sfo2xhu.cloudfront.net/def035a.js';
+      s2.src='https://d18k3i06xdslhs.cloudfront.net/7553b2a.js';
+      s2.onload=function(){
+        setTimeout(function(){
+          if(typeof _VX==='function'){ _VX(); }
+        },200);
+      };
       area.appendChild(s2);
     }
 
